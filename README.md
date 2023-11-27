@@ -1,16 +1,27 @@
 # blog-service
+
 A project for the course "Framework PHP" for IW3 at ESGI
 
 ---
 
 ## Installation
-Start a sql server and insert this sql script:
-```sql
-```
 
-Then, modify the file ``config\bdd.php`` with your database credentials.
+Use docker or import database : 
+
+> Use Docker : 
+> 
+> Open /docker
+> 
+> ```shell
+> docker compose up
+> ```
+
+> Start a mysql or mariadb database
+> 
+> Now just import file : db.sql
 
 Identifiers for the admin account are:
+
 - email: `admin@mail.com`
 - username: `admin`
 - password: `aaa111`
