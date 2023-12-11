@@ -2,6 +2,8 @@
 
 namespace model;
 
+include_once "model/engine/AdminEngine.php";
+
 use model\engine\AdminEngine;
 
 class Admin
@@ -10,6 +12,21 @@ class Admin
     private $username;
     private $password;
     private $email;
+
+    public function __construct($username)
+    {
+        $query = new AdminEngine();
+        try {
+            $admin = $query->getAdminByUsername($username);
+            $this->id = $admin['id'];
+            $this->username = $admin['username'];
+            $this->password = $admin['password'];
+            $this->email = $admin['email'];
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+    }
 
     /**
      * @return mixed
@@ -73,20 +90,5 @@ class Admin
     public function setEmail($email): void
     {
         $this->email = $email;
-    }
-
-    public function __construct($username)
-    {
-        $query = new AdminEngine();
-        try {
-            $admin = $query->getAdminByUsername($username);
-            $this->id = $admin['id'];
-            $this->username = $admin['username'];
-            $this->password = $admin['password'];
-            $this->email = $admin['email'];
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-
     }
 }

@@ -3,6 +3,7 @@
 namespace model\engine;
 
 require_once "controllers/DbController.php";
+
 use controllers\DbController;
 
 class CommentsEngine
@@ -90,5 +91,17 @@ class CommentsEngine
         ));
         $comments = $req->fetchAll();
         return $comments;
+    }
+
+    public function getArticleByCommentId($id)
+    {
+        $bdd = new DbController();
+        $bdd = $bdd->dbConnect();
+        $req = $bdd->prepare("SELECT article_id FROM comments WHERE id = :id");
+        $req->execute(array(
+            'id' => $id
+        ));
+        $article_id = $req->fetch();
+        return $article_id;
     }
 }

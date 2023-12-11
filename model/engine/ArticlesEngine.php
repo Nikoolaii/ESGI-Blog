@@ -3,6 +3,7 @@
 namespace model\engine;
 
 include_once "controllers/DbController.php";
+
 use controllers\DbController;
 
 class ArticlesEngine
@@ -33,30 +34,30 @@ class ArticlesEngine
         return $article;
     }
 
-    public function addArticle($title, $content, $author_id, $categorie_id)
+    public function addArticle($title, $content, $author_id, $category_id)
     {
         $bdd = new DbController();
         $bdd = $bdd->dbConnect();
-        $req = $bdd->prepare("INSERT INTO article (title, content, author_id, categorie_id) VALUES (:title, :content, :author_id, :categorie_id)");
+        $req = $bdd->prepare("INSERT INTO article (title, content, author_id, category_id) VALUES (:title, :content, :author_id, :category_id)");
         $req->execute(array(
             'title' => $title,
             'content' => $content,
             'author_id' => $author_id,
-            'categorie_id' => $categorie_id
+            'category_id' => $category_id
         ));
     }
 
-    public function updateArticle($id, $title, $content, $author_id, $categorie_id)
+    public function updateArticle($id, $title, $content, $author_id, $category_id)
     {
         $bdd = new DbController();
         $bdd = $bdd->dbConnect();
-        $req = $bdd->prepare("UPDATE article SET title = :title, content = :content, author_id = :author_id, categorie_id = :categorie_id WHERE id = :id");
+        $req = $bdd->prepare("UPDATE article SET title = :title, content = :content, author_id = :author_id, category_id = :category_id WHERE id = :id");
         $req->execute(array(
             'id' => $id,
             'title' => $title,
             'content' => $content,
             'author_id' => $author_id,
-            'categorie_id' => $categorie_id
+            'category_id' => $category_id
         ));
     }
 

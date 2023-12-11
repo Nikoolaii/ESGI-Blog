@@ -3,7 +3,6 @@
 namespace model;
 
 use model\engine\ArticlesEngine;
-use model\Comments;
 use model\engine\CategorieEngine;
 
 include_once "model/engine/ArticlesEngine.php";
@@ -17,6 +16,8 @@ class Articles
     private $author;
     private $category_id;
 
+    private $author_id;
+
     public function __construct($id)
     {
         $query = new ArticlesEngine();
@@ -25,6 +26,7 @@ class Articles
         $this->title = $article['title'];
         $this->content = $article['content'];
         $this->author = $article['username'];
+        $this->author_id = $article['author_id'];
         $this->category_id = $article['category_id'];
 
     }
@@ -43,6 +45,22 @@ class Articles
     public function setId(mixed $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorId(): mixed
+    {
+        return $this->author_id;
+    }
+
+    /**
+     * @param mixed $author_id
+     */
+    public function setAuthorId(mixed $author_id): void
+    {
+        $this->author_id = $author_id;
     }
 
     /**
@@ -113,12 +131,12 @@ class Articles
     {
         $query = new ArticlesEngine();
         $comments = $query->getCommentsByArticleId($this->id);
-        return array_map(function ($comment){
+        return array_map(function ($comment) {
             return new Comments($comment['id']);
         }, $comments);
     }
 
-    public function getCategory():string
+    public function getCategory(): string
     {
         $query = new CategorieEngine();
         $category = $query->getCategorie($this->category_id);

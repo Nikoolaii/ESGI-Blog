@@ -45,4 +45,20 @@ class ArticlesController
         $article->deleteArticle($id);
         header('Location: /admin/index');
     }
+
+    public function updateArticle($id, $title, $content, $author_id, $category_id)
+    {
+        include_once "model/engine/ArticlesEngine.php";
+        $query = new \model\engine\ArticlesEngine();
+        $query->updateArticle($id, $title, $content, $author_id, $category_id);
+        header("Location: /admin/index");
+    }
+
+    public function createArticle($title, $content, $author_id, $category_id)
+    {
+        include_once "model/engine/ArticlesEngine.php";
+        $query = new \model\engine\ArticlesEngine();
+        $query->addArticle($title, $content, $author_id, $category_id);
+        header("Location: /admin/index");
+    }
 }

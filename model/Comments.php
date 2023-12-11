@@ -3,6 +3,7 @@
 namespace model;
 
 use model\engine\CommentsEngine;
+
 require_once "model/engine/CommentsEngine.php";
 
 class Comments
@@ -12,6 +13,8 @@ class Comments
     private $content;
     private $author;
     private $article_id;
+    private $article_title;
+
     public function __construct($id)
     {
         $query = new CommentsEngine();
@@ -19,8 +22,10 @@ class Comments
         $this->id = $comments['id'];
         $this->content = $comments['content'];
         $this->author = $comments['author'];
-        $this->article_id = $comments['article_id'];
+        $article = new Articles($comments['article_id']);
+        $this->article_title = $article->getTitle();
     }
+
 
     public function getId(): mixed
     {
@@ -60,6 +65,16 @@ class Comments
     public function setArticleId(mixed $article_id): void
     {
         $this->article_id = $article_id;
+    }
+
+    public function getArticleTitle(): mixed
+    {
+        return $this->article_title;
+    }
+
+    public function setArticleTitle(mixed $article_title): void
+    {
+        $this->article_title = $article_title;
     }
 
 }

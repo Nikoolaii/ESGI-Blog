@@ -50,6 +50,19 @@ class Router
                 $controller->renderCategories();
                 $this->render('footer');
                 break;
+            case '/article':
+                $this->render('header');
+                $controller = new \controllers\ArticlesController();
+                $controller->renderArticle($params['id']);
+                $this->render('footer');
+                break;
+            case '/addComment':
+                $this->render('header');
+                include_once "./controllers/CommentController.php";
+                $controller = new \controllers\CommentController();
+                $controller->addComment($_POST['article_id'], $_POST['content'], $_POST['author']);
+                header('Location: /article?id=' . $_POST['article_id']);
+                break;
             case '/admin':
                 include_once "controllers/AdminController.php";
                 if (isset($_SESSION['username'])) {
@@ -72,7 +85,7 @@ class Router
                         throw new \Exception("Incorrect password");
                     }
                 } catch (\Exception $e) {
-                    $_SESSION['error'] = "An error occurred, please try again.";
+                    $_SESSION['error'] = "Une erreur est parvenue ! Veuillez réessayer";
                     unset($_SESSION['username']);
                     unset($_SESSION['password']);
                     header('Location: /admin');
@@ -89,34 +102,70 @@ class Router
                 $admin = new AdminController();
                 $admin->deconnexion();
                 break;
-            case '/admin/delete':
+            case '/admin/article/delete':
                 include_once "./controllers/ArticlesController.php";
                 $article = new \controllers\ArticlesController();
                 $article->deleteArticle($params['id']);
                 break;
-            case '/admin/edit':
+            case '/admin/article/edit':
                 $this->render("admin/header");
                 include_once "./controllers/AdminController.php";
-                $admin = new AdminController();
+                $admin = new \controllers\AdminController();
                 $admin->editArticle($params['id']);
                 break;
-            case '/admin/update':
+            case '/admin/article/update':
                 include_once "./controllers/ArticlesController.php";
-                $article = new ArticlesController();
-                $article->updateArticle($_POST['id'], $_POST['title'], $_POST['content'], $_POST['category_id']);
+                $article = new \controllers\ArticlesController();
+                $article->updateArticle($_POST['id'], $_POST['title'], $_POST['content'], $_POST['author_id'], $_POST['category_id']);
                 break;
-            case '/article':
-                $this->render('header');
-                $controller = new \controllers\ArticlesController();
-                $controller->renderArticle($params['id']);
-                $this->render('footer');
+            case '/admin/article/add':
+                $this->render("admin/header");
+                include_once "./controllers/AdminController.php";
+                $admin = new \controllers\AdminController();
+                $admin->addArticle();
                 break;
-            case '/addComment':
-                $this->render('header');
+            case '/admin/article/create':
+                include_once "./controllers/ArticlesController.php";
+                $article = new \controllers\ArticlesController();
+                $article->createArticle($_POST['title'], $_POST['content'], $_POST['author_id'], $_POST['category_id']);
+                break;
+            case '/admin/comments/delete':
                 include_once "./controllers/CommentController.php";
-                $controller = new \controllers\CommentController();
-                $controller->addComment($_POST['article_id'], $_POST['content'], $_POST['author']);
-                header('Location: /article?id=' . $_POST['article_id']);
+                $comment = new \controllers\CommentController();
+                $comment->deleteComment($params['id']);
+                break;
+            case '/admin/comments':
+                $this->render("admin/header");
+                include_once "./controllers/AdminController.php";
+                $admin = new \controllers\AdminController();
+                $admin->renderComments();
+                break;
+            case '/admin/categories':
+                $this->render("admin/header");
+                include_once "./controllers/AdminController.php";
+                $admin = new \controllers\AdminController();
+                $admin->renderCategories();
+                break;
+            case '/admin/category/delete':
+                include_once "./controllers/CategoriesController.php";
+                $category = new \controllers\CategoriesController();
+                $category->deleteCategory($params['id']);
+                break;
+            case '/admin/category/edit':
+                $this->render("admin/header");
+                include_once "./controllers/CategoriesController.php";
+                $category = new \controllers\CategoriesController();
+                $category->editCategory($params['id']);
+                break;
+            case '/admin/category/update':
+                include_once "./controllers/CategoriesController.php";
+                $category = new \controllers\CategoriesController();
+                $category->updateCategory($_POST['id'], $_POST['libelle']);
+                break;
+            case '/admin/category/create':
+                include_once "./controllers/CategoriesController.php";
+                $category = new \controllers\CategoriesController();
+                $category->createCategory($_POST['libelle']);
                 break;
             default:
                 include_once "views/404.php";

@@ -3,6 +3,7 @@
 namespace controllers;
 
 include_once "model/Admin.php";
+include_once "model/engine/CategorieEngine.php";
 
 class AdminController
 {
@@ -59,6 +60,43 @@ class AdminController
     {
         $article = new \model\Articles($id);
         $_SESSION['article'] = $article;
+
+        $categories = new \model\engine\CategorieEngine();
+        $categories = $categories->getCategories();
+        $_SESSION['categories'] = array_map(function ($categorie) {
+            return new \model\Categorie($categorie['id']);
+        }, $categories);
         include_once "views/admin/editArticle.php";
     }
+
+    public function addArticle()
+    {
+        $categories = new \model\engine\CategorieEngine();
+        $categories = $categories->getCategories();
+        $_SESSION['categories'] = array_map(function ($categorie) {
+            return new \model\Categorie($categorie['id']);
+        }, $categories);
+
+        $admin = new \model\Admin($_SESSION['username']);
+        $_SESSION['admin'] = $admin;
+        include_once "views/admin/newArticle.php";
+    }
+
+    public function renderComments()
+    {
+        require_once("controllers/CommentController.php");
+        $comments = new \controllers\CommentController();
+        $_SESSION['comments'] = $comments->getAllCommentsInObject();
+        include_once("views/admin/comments.php");
+    }
+
+    public function renderCategories()
+    {
+        require_once("controllers/CategoriesController.php");
+        $categories = new \controllers\CategoriesController();
+        $_SESSION['categories'] = $categories->showAllInObject();
+        include_once("views/admin/cat.php");
+    }
+
+
 }
