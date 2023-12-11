@@ -6,15 +6,7 @@ A project for the course "Framework PHP" for IW3 at ESGI
 
 ## Installation
 
-Use docker or import database : 
-
-> Use Docker : 
-> 
-> Open /docker
-> 
-> ```shell
-> docker compose up
-> ```
+Import database :
 
 > Start a mysql or mariadb database
 > 

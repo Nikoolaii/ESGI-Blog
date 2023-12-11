@@ -14,8 +14,10 @@ class CategorieEngine
     {
         $bdd = new DbController();
         $bdd = $bdd->dbConnect();
-        $req = $bdd->query('SELECT * FROM categories');
-        return $req;
+        $req = $bdd->prepare('SELECT * FROM categories');
+        $req->execute();
+        $categories = $req->fetchAll();
+        return $categories;
     }
 
     public function getCategorie($id)
@@ -50,5 +52,15 @@ class CategorieEngine
         $bdd = $bdd->dbConnect();
         $req = $bdd->prepare('DELETE FROM categories WHERE id = :id');
         $req->execute(array('id' => $id));
+    }
+
+    public function getArticles($id)
+    {
+        $bdd = new DbController();
+        $bdd = $bdd->dbConnect();
+        $req = $bdd->prepare('SELECT * FROM article WHERE category_id = :id');
+        $req->execute(array('id' => $id));
+        $articles = $req->fetchAll();
+        return $articles;
     }
 }

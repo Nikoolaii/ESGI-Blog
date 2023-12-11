@@ -3,6 +3,11 @@
 namespace model;
 
 use model\engine\ArticlesEngine;
+use model\Comments;
+use model\engine\CategorieEngine;
+
+include_once "model/engine/ArticlesEngine.php";
+include_once "model/Comments.php";
 
 class Articles
 {
@@ -102,6 +107,22 @@ class Articles
     public function setCategoryId(mixed $category_id): void
     {
         $this->category_id = $category_id;
+    }
+
+    public function getComments(): array
+    {
+        $query = new ArticlesEngine();
+        $comments = $query->getCommentsByArticleId($this->id);
+        return array_map(function ($comment){
+            return new Comments($comment['id']);
+        }, $comments);
+    }
+
+    public function getCategory():string
+    {
+        $query = new CategorieEngine();
+        $category = $query->getCategorie($this->category_id);
+        return $category['libelle'];
     }
 
 }

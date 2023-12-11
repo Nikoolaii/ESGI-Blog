@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Blog PHP</title>
-    <link href="./style/output.css" rel="stylesheet">
+    <link href="/style/output.css" rel="stylesheet">
 </head>
 
 <body>

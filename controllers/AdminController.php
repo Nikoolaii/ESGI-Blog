@@ -4,8 +4,6 @@ namespace controllers;
 
 include_once "model/Admin.php";
 
-use model\Admin;
-
 class AdminController
 {
     public function __construct()
@@ -14,10 +12,10 @@ class AdminController
 
     public function start(): void
     {
-        if(isset($_SESSION['isConnected']) && $_SESSION['isConnected']){
+        if (isset($_SESSION['isConnected']) && $_SESSION['isConnected']) {
             renderAdmin();
-        }else{
-            include_once ("views/admin/login.php");
+        } else {
+            include_once("views/admin/login.php");
         }
     }
 
@@ -29,7 +27,7 @@ class AdminController
             include_once("model/engine/AdminEngine.php");
             try {
                 $admin = new \model\Admin($username);
-                if($admin->getPassword() == hash('sha256',$password)) {
+                if ($admin->getPassword() == hash('sha256', $password)) {
                     $_SESSION['isConnected'] = true;
                     return true;
                 } else {
@@ -45,8 +43,22 @@ class AdminController
 
     public function renderAdmin()
     {
+        require_once("controllers/ArticlesController.php");
+        $articles = new \controllers\ArticlesController();
+        $_SESSION['articles'] = $articles->showAllInObject();
         include_once("views/admin/index.php");
     }
 
+    public function deconnexion()
+    {
+        session_destroy();
+        header("Location: /");
+    }
 
+    public function editArticle($id)
+    {
+        $article = new \model\Articles($id);
+        $_SESSION['article'] = $article;
+        include_once "views/admin/editArticle.php";
+    }
 }
