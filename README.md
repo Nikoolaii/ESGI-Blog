@@ -10,7 +10,7 @@ Import database :
 
 > Start a mysql or mariadb database
 > 
-> Now just import file : db.sql
+> Now just import file : esgi_blog.sql
 
 Identifiers for the admin account are:
 
